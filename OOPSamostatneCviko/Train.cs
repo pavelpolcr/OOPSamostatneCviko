@@ -98,93 +98,53 @@ namespace OOPSamostatneCviko
                 else if (Wagons.ElementAt(wagonNumber - 1).GetType() == typeof(EconomyWagon))
                 {
                     EconomyWagon refw = Wagons.ElementAt(wagonNumber - 1) as EconomyWagon;
-                    if(seatNumber > refw.Chairs.Count)
-                    {
-                        Console.WriteLine($"vagon ma jen {refw.Chairs.Count} sedadel.");
-                    }
-                    else
-                    {
-                        if (refw.Chairs.Find(c => c.Number == seatNumber).Reserved == false)
-                        {
-                            refw.Chairs.Find(c => c.Number == seatNumber).Reserved = true;
-                            Console.WriteLine($"Uspesne reyervovano sedadlo cislo {seatNumber} ve vagone cislo {wagonNumber}");
-                        }
-                        else
-                        {
-                            List<Chair> freechairs = refw.Chairs.FindAll(c => c.Reserved == false);
-                            Console.WriteLine($"Sedadlo cislo {seatNumber} je bohuzel ve voze {wagonNumber} obsazeno. Zkuste rezervovat nektere z techto volnych mist:\n");
-                            foreach (var item in freechairs)
-                            {
-                                Console.WriteLine($"{ item.Number}");
-                            }
-                            Console.WriteLine("\n");
-                            
-                        }
-                        
-                    }
-                        
+                    HandleReservation(wagonNumber, seatNumber, refw);
+
                 }
                 else if (Wagons.ElementAt(wagonNumber - 1).GetType() == typeof(BussinessWagon))
                 {
                     BussinessWagon refw = Wagons.ElementAt(wagonNumber - 1) as BussinessWagon;
-                    if (seatNumber > refw.Chairs.Count)
-                    {
-                        Console.WriteLine($"vagon ma jen {refw.Chairs.Count} sedadel.");
-                    }
-                    else
-                    {
-                        if (refw.Chairs.Find(c => c.Number == seatNumber).Reserved == false)
-                        {
-                            refw.Chairs.Find(c => c.Number == seatNumber).Reserved = true;
-                            Console.WriteLine($"Uspesne reyervovano sedadlo cislo {seatNumber} ve vagone cislo {wagonNumber}");
-                        }
-                        else
-                        {
-                            List<Chair> freechairs = refw.Chairs.FindAll(c => c.Reserved == false);
-                            Console.WriteLine($"Sedadlo cislo {seatNumber} je bohuzel ve voze {wagonNumber} obsazeno. Zkuste rezervovat nektere z techto volnych mist:\n");
-                            foreach (var item in freechairs)
-                            {
-                                Console.WriteLine($"{ item.Number}");
-                            }
-                            Console.WriteLine("\n");
-
-                        }
-
-                    }
+                    HandleReservation(wagonNumber, seatNumber, refw);
                 }
                 else if (Wagons.ElementAt(wagonNumber - 1).GetType() == typeof(NightWagon))
                 {
                     NightWagon refw = Wagons.ElementAt(wagonNumber - 1) as NightWagon;
-                    if (seatNumber > refw.Chairs.Count)
-                    {
-                        Console.WriteLine($"vagon ma jen {refw.Chairs.Count} sedadel.");
-                    }
-                    else
-                    {
-                        if (refw.Chairs.Find(c => c.Number == seatNumber).Reserved == false)
-                        {
-                            refw.Chairs.Find(c => c.Number == seatNumber).Reserved = true;
-                            Console.WriteLine($"Uspesne reyervovano sedadlo cislo {seatNumber} ve vagone cislo {wagonNumber}");
-                        }
-                        else
-                        {
-                            List<Chair> freechairs = refw.Chairs.FindAll(c => c.Reserved == false);
-                            Console.WriteLine($"Sedadlo cislo {seatNumber} je bohuzel ve voze {wagonNumber} obsazeno. Zkuste rezervovat nektere z techto volnych mist:\n");
-                            foreach (var item in freechairs)
-                            {
-                                Console.WriteLine($"{ item.Number}");
-                            }
-                            Console.WriteLine("\n");
-
-                        }
-
-                    }
+                    HandleReservation(wagonNumber, seatNumber, refw);
                 }
                 
             }
             
 
         }
+
+        private static void HandleReservation(int wagonNumber, int seatNumber, PersonalWagon refw)
+        {
+            if (seatNumber > refw.Chairs.Count)
+            {
+                Console.WriteLine($"vagon ma jen {refw.Chairs.Count} sedadel.");
+            }
+            else
+            {
+                if (refw.Chairs.Find(c => c.Number == seatNumber).Reserved == false)
+                {
+                    refw.Chairs.Find(c => c.Number == seatNumber).Reserved = true;
+                    Console.WriteLine($"Uspesne reyervovano sedadlo cislo {seatNumber} ve vagone cislo {wagonNumber}");
+                }
+                else
+                {
+                    List<Chair> freechairs = refw.Chairs.FindAll(c => c.Reserved == false);
+                    Console.WriteLine($"Sedadlo cislo {seatNumber} je bohuzel ve voze {wagonNumber} obsazeno. Zkuste rezervovat nektere z techto volnych mist:\n");
+                    foreach (var item in freechairs)
+                    {
+                        Console.WriteLine($"{ item.Number}");
+                    }
+                    Console.WriteLine("\n");
+
+                }
+
+            }
+        }
+
         public void ListReservedChairs()
         {
             int i = 0;
@@ -251,190 +211,6 @@ namespace OOPSamostatneCviko
             }
             return ret;
         }
-    }
-    class Bed
-    {
-
-
-        public int Number { get; private set; }
-        public bool Reserved { get; private set; }
-        public Bed(int number, bool reserved)
-        {
-            Number = number;
-            Reserved = reserved;
-        }
-    }
-    public class Chair
-    {
-
-
-        public int Number { get; private set; }
-        public bool Reserved { get; set; }
-        public Chair(int number, bool reserved)
-        {
-            Number = number;
-            Reserved = reserved;
-        }
-    }
-    class Door
-    {
-        public double Height { get; private set; }
-        public double Width { get; private set; }
-    }
-    abstract class PersonalWagon
-    {
-        private List<Door> doors = new List<Door>();
-        public List<Door> Doors { get => doors; set => doors = value; }
-        private List<Chair> chairs = new List<Chair>();
-
-        public List<Chair> Chairs { get => chairs; set => chairs = value; }
-        public int NumberOfChairs { get; private set; }
-        public PersonalWagon(int numberOfChairs)
-        {
-            NumberOfChairs = numberOfChairs;
-
-        }
-        public abstract void CreateWagonSpace();
-
-    }
-    class EconomyWagon : PersonalWagon, ITrainConnectable
-    {
-        public EconomyWagon(int numberOfChairs) : base(numberOfChairs)
-        {
-        }
-
-        public Train ConnectedToTrain { get; set; }
-
-        public void ConnectWagon(Train connectTo)
-        {
-            connectTo.ConnectWagon(this);
-
-        }
-
-        public override void CreateWagonSpace()
-        {
-            for (int i = 0; i < NumberOfChairs; i++)
-            {
-                this.Chairs.Add(new Chair(i + 1, false));
-            }
-        }
-
-        public void DisconnectWagon(Train disconnectFrom)
-        {
-            disconnectFrom.DisconnectWagon(this);
-        }
-
-        public override string ToString()
-        {
-            return $"Economy vuz, celkem {NumberOfChairs} sedadel z nichz je rezervovano {Chairs.Count(c => c.Reserved == true)}";
-        }
-    }
-    class BussinessWagon : PersonalWagon, ITrainConnectable
-    {
-        public Person Stewart { get; private set; }
-        public Train ConnectedToTrain { get; set; }
-
-        public BussinessWagon(int numberOfChairs, Person stewart) : base(numberOfChairs)
-        {
-            this.Stewart = stewart;
-            CreateWagonSpace();
-        }
-
-        public override void CreateWagonSpace()
-        {
-            for (int i = 0; i < NumberOfChairs; i++)
-            {
-                this.Chairs.Add(new Chair(i + 1, false));
-            }
-        }
-        public override string ToString()
-        {
-            return $"Bussines vuz, cestujici obsluhuje {Stewart.FirstName} {Stewart.LastName}, celkem {NumberOfChairs} sedadel z nichz je rezervovano {Chairs.Count(c => c.Reserved == true)}";
-        }
-
-        public void ConnectWagon(Train connectTo)
-        {
-            connectTo.ConnectWagon(this);
-
-        }
-
-        public void DisconnectWagon(Train disconnectFrom)
-        {
-            disconnectFrom.DisconnectWagon(this);
-        }
-    }
-    class NightWagon : PersonalWagon, ITrainConnectable
-    {
-        public int NumberOfBeds { get; private set; }
-        private List<Bed> beds = new List<Bed>();
-        public List<Bed> Beds { get => beds; set => beds = value; }
-        public Train ConnectedToTrain { get; set; }
-
-        public NightWagon(int numberOfChairs, int numberofbeds) : base(numberOfChairs)
-        {
-            NumberOfBeds = numberofbeds;
-            CreateWagonSpace();
-        }
-
-        public override void CreateWagonSpace()
-        {
-            for (int i = 0; i < NumberOfChairs; i++)
-            {
-                this.Chairs.Add(new Chair(i + 1, false));
-            }
-            for (int i = 0; i < NumberOfBeds; i++)
-            {
-                this.Beds.Add(new Bed(i + 1, false));
-            }
-        }
-        public override string ToString()
-        {
-            return $"Spaci vuz, maximální kapacita posteli {NumberOfBeds}, aktualne rezervovano {Beds.Count(b => b.Reserved == true)}, dale {NumberOfChairs} sedadel z nichz je obsazeno {Chairs.Count(c => c.Reserved == true)}";
-        }
-
-        public void ConnectWagon(Train connectTo)
-        {
-            connectTo.ConnectWagon(this);
-
-        }
-
-        public void DisconnectWagon(Train disconnectFrom)
-        {
-            disconnectFrom.DisconnectWagon(this);
-        }
-    }
-    class Hopper : ITrainConnectable
-    {
-        public double LoadingCapacity { get; private set; }
-        public Train ConnectedToTrain { get; set; }
-
-        public Hopper(double loadingCapacity)
-        {
-            LoadingCapacity = loadingCapacity;
-        }
-
-        public override string ToString()
-        {
-            return $"Nákladní vagon, maximální kapacita {LoadingCapacity} kg.";
-        }
-
-        public void ConnectWagon(Train connectTo)
-        {
-            connectTo.ConnectWagon(this);
-
-        }
-
-        public void DisconnectWagon(Train disconnectFrom)
-        {
-            disconnectFrom.DisconnectWagon(this);
-        }
-    }
-
-    interface ITrainConnectable
-    {
-        Train ConnectedToTrain { get; set; }
-        void ConnectWagon(Train connectTo);
-        void DisconnectWagon(Train disconnectFrom);
     }
 
 }
