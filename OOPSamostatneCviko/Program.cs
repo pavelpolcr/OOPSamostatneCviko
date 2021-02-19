@@ -27,6 +27,7 @@ namespace OOPSamostatneCviko
             steamtrain.ConnectWagon(nakl3);
             train1.ReserveChair(3, 3);
             train1.ReserveChair(3, 3);
+            train1.ListReservedChairs();
 
 
         }
